@@ -1,0 +1,114 @@
+body {
+    font-family: Arial, sans-serif;
+    color: #4e342e; /* بني داكن */
+    background-color: #fff; /* أبيض */
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #4e342e; /* بني داكن */
+    color: #fff; /* أبيض */
+    padding: 10px 20px;
+    text-align: center;
+    position: relative;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+header .star-rating {
+    font-size: 1.5em;
+    color: gold;
+    margin-top: 5px;
+}
+
+nav {
+    background-color: #6d4c41; /* بني متوسط */
+}
+
+nav ul.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul.menu li {
+    margin: 0;
+}
+
+nav ul.menu li a {
+    color: #fff; /* أبيض */
+    text-decoration: none;
+    padding: 15px 20px;
+    display: block;
+    text-align: center;
+}
+
+nav ul.menu li a:hover {
+    background-color: #5d4037; /* بني غامق عند التمرير */
+}
+
+main {
+    padding: 20px;
+}
+
+main h2 {
+    border-bottom: 2px solid #6d4c41; /* بني متوسط */
+    padding-bottom: 5px;
+    color: #6d4c41; /* بني متوسط */
+}
+
+.item-list {
+    margin-bottom: 20px;
+}
+
+.item-list li {
+    margin-bottom: 10px;
+}
+
+.item-list img {
+    max-width: 150px;
+    height: auto;
+    margin-left: 10px;
+}
+
+footer {
+    background-color: #4e342e; /* بني داكن */
+    color: #fff; /* أبيض */
+    text-align: center;
+    padding: 10px 0;
+    position: relative;
+}
+
+.footer-notes {
+    font-size: 0.8em;
+    color: #ddd;
+    margin-top: 10px;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-container label,
+.form-container input,
+.form-container button {
+    margin-bottom: 10px;
+}
+
+/* إزالة أي محتوى غير مرغوب فيه من قبل أو بعد العنصر */
+::before,ر.س
+::after {د.ل
+    content: none;
+}
+
+/* التأكد من عدم وجود تأثيرات إضافية على الأرقام */
+input[type="number"] {
+    -moz-appearance: textfield; /* يزيل الأسهم في متصفحات معينة */
+}

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مطعم اسطنبول السياحي</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+        .header-content {
+            text-align: center;
+            background-color: #5c0000; /* بني غامق */
+            color: #f8f8f8; /* لون نص أبيض */
+            padding: 30px 0;
+        }
+        .header-content h1 {
+            font-size: 3em;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: transparent; /* إزالة الخلفية */
+            display: inline-block; /* جعل النص يأخذ حيزاً أقل */
+            padding: 10px 20px; /* إضافة بعض الهوامش حول النص */
+            border-radius: 15px; /* زاوية دائرية */
+        }
+        .star-rating {
+            font-size: 1.5em;
+            margin-top: 10px;
+            color: #ffd700; /* أصفر للنجوم */
+        }
+        .menu {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+            background-color: #f8f8f8; /* خلفية بيضاء */
+            border-radius: 15px;
+            overflow: hidden;
+            white-space: nowrap; /* تمكين التمرير الأفقي */
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            overflow-x: auto; /* إضافة تمرير أفقي */
+        }
+        .menu li {
+            display: inline-block;
+            margin: 5px 10px;
+            background-color: #5c0000; /* بني غامق */
+            border-radius: 20px; /* دوائر */
+        }
+        .menu li a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 20px;
+            background-color: #5c0000; /* بني غامق */
+        }
+        .menu li a:hover {
+            background-color: #5c0000; /* بني فاتح */
+        }
+        .item-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .item-list li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            background-color: #ffffff; /* خلفية بيضاء */
+            border-radius: 10px;
+            margin: 5px 0;
+            color: #333;
+            position: relative;
+        }
+        .item-list button {
+            background: none;
+            border: none;
+            color: #007bff;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+        .item-list button:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            background-color: #5c0000; /* بني غامق */
+            color: white;
+            border-radius: 15px;
+            padding: 10px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .notes {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #5c0000; /* بني غامق */
+            color: white;
+        }
+        footer p {
+            margin: 0;
+        }
+        .footer-notes {
+            font-size: 0.9em;
+        }
+    </style>
+    <script>
+        function loadItems(sectionId) {
+            const list = document.getElementById(sectionId);
+            const items = JSON.parse(localStorage.getItem(sectionId)) || [];
+            list.innerHTML = '';
+            items.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `${item.name} - ${item.price} <button onclick="editItem('${sectionId}', '${item.name}')">تعديل</button> <button onclick="deleteItem('${sectionId}', '${item.name}')">حذف</button>`;
+                list.appendChild(listItem);
+            });
+        }
+
+        function addItem(sectionId) {
+            const itemName = prompt('أدخل اسم الصنف:');
+            const itemPrice = prompt('أدخل سعر الصنف:');
+            if (itemName && itemPrice) {
+                const items = JSON.parse(localStorage.getItem(sectionId)) || [];
+                items.push({ name: itemName, price: itemPrice });
+                localStorage.setItem(sectionId, JSON.stringify(items));
+                loadItems(sectionId);
+            }
+        }
+
+        function editItem(sectionId, oldName) {
+            const items = JSON.parse(localStorage.getItem(sectionId)) || [];
+            const newName = prompt('أدخل اسم الصنف الجديد:');
+            const newPrice = prompt('أدخل سعر الصنف الجديد:');
+            if (newName && newPrice) {
+                const item = items.find(item => item.name === oldName);
+                if (item) {
+                    item.name = newName;
+                    item.price = newPrice;
+                    localStorage.setItem(sectionId, JSON.stringify(items));
+                    loadItems(sectionId);
+                }
+            }
+        }
+
+        function deleteItem(sectionId, itemName) {
+            let items = JSON.parse(localStorage.getItem(sectionId)) || [];
+            items = items.filter(item => item.name !== itemName);
+            localStorage.setItem(sectionId, JSON.stringify(items));
+            loadItems(sectionId);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = [
+                'salads-list', 'hot-appetizers-list', 'soups-list', 'oven-casseroles-list', 'main-dishes-list',
+                'grill-kilo-list', 'meat-grill-list', 'chicken-grill-list', 'fish-list', 'fish-kilo-list',
+                'grill-meals-list', 'fry-meals-list', 'pizza-list', 'pastries-list', 'grill-sandwiches-list',
+                'fish-sandwiches-list', 'natural-juices-list'
+            ];
+            sections.forEach(sectionId => loadItems(sectionId));
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>مطعم إسطنبول السياحي</h1>
+            <div class="star-rating">★★★★★★</div>
+        </div>
+    </header>
+    <nav>
+        <ul class="menu">
+            <li><a href="#salads">السلاطات</a></li>
+            <li><a href="#hot-appetizers">المقبلات الساخنة</a></li>
+            <li><a href="#soups">الشوربات</a></li>
+            <li><a href="#oven-casseroles">طواجن فرن</a></li>
+            <li><a href="#main-dishes">الوجبات الرئيسية</a></li>
+            <li><a href="#grill-kilo">مشويات بالكيلو</a></li>
+            <li><a href="#meat-grill">مشويات لحوم</a></li>
+            <li><a href="#chicken-grill">مشويات دجاج</a></li>
+            <li><a href="#fish">اسماك</a></li>
+            <li><a href="#fish-kilo">اسماك بالكيلو</a></li>
+            <li><a href="#grill-meals">وجبات الجريل</a></li>
+            <li><a href="#fry-meals">وجبات القلايا</a></li>
+            <li><a href="#pizza">بيتزا</a></li>
+            <li><a href="#pastries">المقلوبة - الفطائر</a></li>
+            <li><a href="#grill-sandwiches">سندوتشات المشاوي</a></li>
+            <li><a href="#fish-sandwiches">سندوتشات سمك</a></li>
+            <li><a href="#natural-juices">العصائر الطبيعية</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section id="salads">
+            <h2 class="section-heading">السلاطات</h2>
+            <ul id="salads-list" class="item-list"></ul>
+            <button onclick="addItem('salads-list')">أضف صنف</button>
+        </section>
+        <section id="hot-appetizers">
+            <h2 class="section-heading">المقبلات الساخنة</h2>
+            <ul id="hot-appetizers-list" class="item-list"></ul>
+            <button onclick="addItem('hot-appetizers-list')">أضف صنف</button>
+        </section>
+        <section id="soups">
+            <h2 class="section-heading">الشوربات</h2>
+            <ul id="soups-list" class="item-list"></ul>
+            <button onclick="addItem('soups-list')">أضف صنف</button>
+        </section>
+        <section id="oven-casseroles">
+            <h2 class="section-heading">طواجن فرن</h2>
+            <ul id="oven-casseroles-list" class="item-list"></ul>
+            <button onclick="addItem('oven-casseroles-list')">أضف صنف</button>
+        </section>
+        <section id="main-dishes">
+            <h2 class="section-heading">الوجبات الرئيسية</h2>
+            <ul id="main-dishes-list" class="item-list"></ul>
+            <button onclick="addItem('main-dishes-list')">أضف صنف</button>
+        </section>
+        <section id="grill-kilo">
+            <h2 class="section-heading">مشويات بالكيلو</h2>
+            <ul id="grill-kilo-list" class="item-list"></ul>
+            <button onclick="addItem('grill-kilo-list')">أضف صنف</button>
+        </section>
+        <section id="meat-grill">
+            <h2 class="section-heading">مشويات لحوم</h2>
+            <ul id="meat-grill-list" class="item-list"></ul>
+            <button onclick="addItem('meat-grill-list')">أضف صنف</button>
+        </section>
+        <section id="chicken-grill">
+            <h2 class="section-heading">مشويات دجاج</h2>
+            <ul id="chicken-grill-list" class="item-list"></ul>
+            <button onclick="addItem('chicken-grill-list')">أضف صنف</button>
+        </section>
+        <section id="fish">
+            <h2 class="section-heading">اسماك</h2>
+            <ul id="fish-list" class="item-list"></ul>
+            <button onclick="addItem('fish-list')">أضف صنف</button>
+        </section>
+        <section id="fish-kilo">
+            <h2 class="section-heading">اسماك بالكيلو</h2>
+            <ul id="fish-kilo-list" class="item-list"></ul>
+            <button onclick="addItem('fish-kilo-list')">أضف صنف</button>
+        </section>
+        <section id="grill-meals">
+            <h2 class="section-heading">وجبات الجريل</h2>
+            <ul id="grill-meals-list" class="item-list"></ul>
+            <button onclick="addItem('grill-meals-list')">أضف صنف</button>
+        </section>
+        <section id="fry-meals">
+            <h2 class="section-heading">وجبات القلايا</h2>
+            <ul id="fry-meals-list" class="item-list"></ul>
+            <button onclick="addItem('fry-meals-list')">أضف صنف</button>
+        </section>
+        <section id="pizza">
+            <h2 class="section-heading">بيتزا</h2>
+            <ul id="pizza-list" class="item-list"></ul>
+            <button onclick="addItem('pizza-list')">أضف صنف</button>
+        </section>
+        <section id="pastries">
+            <h2 class="section-heading">المقلوبة - الفطائر</h2>
+            <ul id="pastries-list" class="item-list"></ul>
+            <button onclick="addItem('pastries-list')">أضف صنف</button>
+        </section>
+        <section id="grill-sandwiches">
+            <h2 class="section-heading">سندوتشات المشاوي</h2>
+            <ul id="grill-sandwiches-list" class="item-list"></ul>
+            <button onclick="addItem('grill-sandwiches-list')">أضف صنف</button>
+        </section>
+        <section id="fish-sandwiches">
+            <h2 class="section-heading">سندوتشات سمك</h2>
+            <ul id="fish-sandwiches-list" class="item-list"></ul>
+            <button onclick="addItem('fish-sandwiches-list')">أضف صنف</button>
+        </section>
+        <section id="natural-juices">
+            <h2 class="section-heading">العصائر الطبيعية</h2>
+            <ul id="natural-juices-list" class="item-list"></ul>
+            <button onclick="addItem('natural-juices-list')">أضف صنف</button>
+        </section>
+        <!-- ملاحظات قبل الفوتر -->
+        <div class="notes">
+            <p>جميع الوجبات يقدم معها أرز + سلطة + خبز</p>
+            <p>الشاي الأخضر يقدم ضيافة</p>
+        </div>
+        <!-- الفوتر -->
+        <footer>
+            <p>مطعم اسطنبول السياحي - موقع: البيضاء، جبل الأخضر</p>
+            <p class="footer-notes">Created by nel</p>
+        </footer>
+    </main>
+</body>
+</html>
